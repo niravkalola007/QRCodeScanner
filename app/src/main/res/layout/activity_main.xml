@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <include
+        layout="@layout/app_bar" />
+    <me.dm7.barcodescanner.zbar.ZBarScannerView
+        android:id="@+id/scanner"
+
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:id="@+id/txtQRCode"
+        android:textSize="18sp"
+        android:text="Searching QR Code"
+        android:textColor="#494949"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
