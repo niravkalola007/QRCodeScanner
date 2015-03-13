@@ -1,40 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:weightSum="3"
+android:layout_gravity="bottom"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <include
-        layout="@layout/app_bar" />
+
 
     <FrameLayout
         android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+
         />
 
-    <TextView
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:id="@+id/scanText"
-        android:text="Scanning..."
+    <com.google.android.gms.ads.AdView
+        android:layout_gravity="bottom"
+        android:id="@+id/advertiseView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-    </TextView>
-    <Button
-        android:layout_marginTop="16dp"
-        android:padding="10dp"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:id="@+id/ScanButton"
-        android:textColor="#fff"
-        android:background="@color/primaryColor"
-        android:text="New Scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
-</LinearLayout>
+        ads:adSize="BANNER"
+
+        ads:adUnitId="ca-app-pub-6480052388929088/2907699258" />
+
+
+</FrameLayout>

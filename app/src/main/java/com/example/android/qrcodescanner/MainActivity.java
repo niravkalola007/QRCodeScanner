@@ -1,19 +1,16 @@
 package com.example.android.qrcodescanner;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
@@ -27,64 +24,34 @@ public class MainActivity extends ActionBarActivity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private Handler autoFocusHandler;
-
-    TextView scanText;
-    Button scanButton;
-
+    private AdView adView;
     ImageScanner scanner;
-
     private boolean barcodeScanned = false;
     private boolean previewing = true;
 
     static {
         System.loadLibrary("iconv");
     }
-    private Toolbar toolbar;
+
     MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setTitle("HOME");
-            setSupportActionBar(toolbar);
-        }
-
-
+        adView = (AdView) findViewById(R.id.advertiseView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        autoFocusHandler = new Handler();
-        mCamera = getCameraInstance();
 
-        /* Instance barcode scanner */
-        scanner = new ImageScanner();
-        scanner.setConfig(0, Config.X_DENSITY, 3);
-        scanner.setConfig(0, Config.Y_DENSITY, 3);
 
-        mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
-        FrameLayout preview = (FrameLayout)findViewById(R.id.cameraPreview);
-        preview.addView(mPreview);
-
-        scanText = (TextView)findViewById(R.id.scanText);
-
-        scanButton = (Button)findViewById(R.id.ScanButton);
-        mp= MediaPlayer.create(this, R.raw.test);
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (barcodeScanned) {
-                    barcodeScanned = false;
-                    scanText.setText("Scanning...");
-                    mCamera.setPreviewCallback(previewCb);
-                    mCamera.startPreview();
-                    previewing = true;
-                    mCamera.autoFocus(autoFocusCB);
-                }
-            }
-        });
     }
     public void onPause() {
+        if (adView != null) {
+            adView.pause();
+        }
         super.onPause();
         releaseCamera();
     }
@@ -132,9 +99,10 @@ public class MainActivity extends ActionBarActivity {
 
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
+                    Intent i=new Intent(MainActivity.this,DetailActivity.class);
+                    i.putExtra("qr_value",sym+"");
+                    startActivity(i);
 
-                    scanText.setText("barcode result " + sym.getData());
-                    mp.start();
                     barcodeScanned = true;
                 }
             }
@@ -148,5 +116,32 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+        autoFocusHandler = new Handler();
+        mCamera = getCameraInstance();
 
+        /* Instance barcode scanner */
+        scanner = new ImageScanner();
+        scanner.setConfig(0, Config.X_DENSITY, 3);
+        scanner.setConfig(0, Config.Y_DENSITY, 3);
+
+        mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
+        FrameLayout preview = (FrameLayout)findViewById(R.id.cameraPreview);
+        preview.addView(mPreview);
+    }
+
+    /** Called before the activity is destroyed. */
+    @Override
+    public void onDestroy() {
+        // Destroy the AdView.
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
 }
