@@ -24,5 +24,10 @@ android:layout_gravity="bottom"
 
         ads:adUnitId="ca-app-pub-6480052388929088/2907699258" />
 
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@drawable/border"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
