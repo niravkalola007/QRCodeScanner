@@ -2,24 +2,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:weightSum="3"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
     <include
         layout="@layout/app_bar" />
-    <me.dm7.barcodescanner.zbar.ZBarScannerView
-        android:id="@+id/scanner"
 
+    <FrameLayout
+        android:id="@+id/cameraPreview"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 
     <TextView
         android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:id="@+id/txtQRCode"
         android:textSize="18sp"
-        android:text="Searching QR Code"
-        android:textColor="#494949"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:gravity="center"
+        android:id="@+id/scanText"
+        android:text="Scanning..."
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+    </TextView>
+    <Button
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:id="@+id/ScanButton"
+        android:textColor="#fff"
+        android:background="@color/primaryColor"
+        android:text="New Scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
 </LinearLayout>
