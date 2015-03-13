@@ -39,6 +39,7 @@ public class DetailActivity extends ActionBarActivity {
         clipboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 processCopy();
             }
         });
@@ -49,11 +50,22 @@ public class DetailActivity extends ActionBarActivity {
                 processShare();
             }
         });
+
         Intent i=getIntent();
+
         qrValue=i.getStringExtra("qr_value");
+
+        if(qrValue.contains("http")){
+            clipboard.setVisibility(View.VISIBLE);
+        } else {
+            clipboard.setVisibility(View.GONE);
+        }
+
         qr= (TextView) findViewById(R.id.qrValue);
         qr.setText(qrValue);
+
         adView = (AdView) findViewById(R.id.advertiseView);
+
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
@@ -113,9 +125,8 @@ public class DetailActivity extends ActionBarActivity {
 
     private void processCopy() {
 
-        MyClipboardManager manager = new MyClipboardManager();
-        manager.copyToClipboard(DetailActivity.this,qrValue);
-        Toast.makeText(this, "Copied To ClipBoard", Toast.LENGTH_SHORT).show();
+    Intent i=new Intent(Intent.ACTION_VIEW,Uri.parse(qrValue));
+        startActivity(i);
 
     }
 

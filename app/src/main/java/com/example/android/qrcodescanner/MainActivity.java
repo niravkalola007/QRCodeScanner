@@ -7,7 +7,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -99,10 +101,10 @@ public class MainActivity extends ActionBarActivity {
 
                 SymbolSet syms = scanner.getResults();
                 for (Symbol sym : syms) {
-                    Intent i=new Intent(MainActivity.this,DetailActivity.class);
-                    i.putExtra("qr_value",sym+"");
-                    startActivity(i);
 
+                    Intent i=new Intent(MainActivity.this,DetailActivity.class);
+                    i.putExtra("qr_value",sym.getData().toString()+"");
+                    startActivity(i);
                     barcodeScanned = true;
                 }
             }
@@ -134,7 +136,6 @@ public class MainActivity extends ActionBarActivity {
         FrameLayout preview = (FrameLayout)findViewById(R.id.cameraPreview);
         preview.addView(mPreview);
     }
-
     /** Called before the activity is destroyed. */
     @Override
     public void onDestroy() {
